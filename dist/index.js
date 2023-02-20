@@ -8,4 +8,4 @@ function alias() {
     };
 }
 
-export { alias };
+export { alias as default };

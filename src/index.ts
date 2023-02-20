@@ -1,6 +1,6 @@
 import { Plugin } from 'rollup'
 
-export function alias(): Plugin {
+export default function alias(): Plugin {
   return {
     name: 'fhx-alias',
     resolveId(source: string, importer: string | undefined) {
