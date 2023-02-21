@@ -1,9 +1,15 @@
-function alias() {
+function alias(options) {
+    const { entries } = options;
     return {
         name: 'fhx-alias',
         resolveId(source, importer) {
             console.log('alias - resolved => ', source, importer);
-            return source;
+            const matchKey = Object.keys(entries).find((key) => {
+                return source.startsWith(key);
+            });
+            if (!matchKey)
+                return source;
+            return source.replace(matchKey, entries[matchKey]) + '.js';
         },
     };
 }

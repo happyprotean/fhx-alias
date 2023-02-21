@@ -1,5 +1,4 @@
-
-import { defineConfig} from 'rollup'
+import { defineConfig } from 'rollup'
 import alias from 'fhx-alias'
 
 export default defineConfig({
@@ -8,5 +7,11 @@ export default defineConfig({
     file: './dist/index.js',
     format: 'es',
   },
-  plugins: [alias()]
+  plugins: [
+    alias({
+      entries: {
+        '@': './utils',
+      },
+    }),
+  ],
 })

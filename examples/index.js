@@ -1,3 +1,3 @@
-import { add } from './utils/index'
+import { add } from '@/index'
 
 console.log(add(1, 2))
