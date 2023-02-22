@@ -2,22 +2,48 @@
 import alias from './index'
 import { describe, it, expect} from 'vitest'
 
-describe('options is object', () => {
-  it('options match successfully', () => {
-    const aliasObj: any = alias({
-      entries: {
-        '@': './utils'
-      }
+describe('alias', () => {
+  describe('options is object', () => {
+    it('options match successfully', () => {
+      const aliasObj: any = alias({
+        entries: {
+          '@': './utils',
+          'utils': './utils'
+        }
+      })
+      expect(aliasObj.resolveId('@/index')).toBe('./utils/index.js')
+      expect(aliasObj.resolveId('utils/index')).toBe('./utils/index.js')
     })
-    expect(aliasObj.resolveId('@/index')).toBe('./utils/index.js')
+  
+    it('options match fail', () => {
+      const aliasObj: any = alias({
+        entries: {
+          '@': './utils'
+        }
+      })
+      expect(aliasObj.resolveId('!/index')).toBe('!/index')
+    })
   })
 
-  it('options match fail', () => {
-    const aliasObj: any = alias({
-      entries: {
-        '@': './utils'
-      }
+  describe('options is Array', () => {
+    it('options match successfully', () => {
+      const aliasObj: any = alias({
+        entries: [
+          { find: '@', replacement: './utils' },
+          { find: /utils/, replacement: './utils' }
+        ] 
+      })
+      expect(aliasObj.resolveId('@/index')).toBe('./utils/index.js')
+      expect(aliasObj.resolveId('utils/index')).toBe('./utils/index.js')
     })
-    expect(aliasObj.resolveId('!/index')).toBe('!/index')
+  
+    it('options match fail', () => {
+      const aliasObj: any = alias({
+        entries: [
+          { find: '@', replacement: './utils' },
+        ] 
+      })
+      expect(aliasObj.resolveId('!/index')).toBe('!/index')
+    })
   })
 })
