@@ -1,5 +1,5 @@
 import { Plugin } from 'rollup'
-import { addExtension } from '@rollup/pluginutils'
+// import { addExtension } from '@rollup/pluginutils'
 
 interface Entries {
   [key: string]: string
@@ -37,10 +37,13 @@ export default function alias(options: AliasOptions): Plugin {
   const entries = normalizeEntries(options.entries)
   return {
     name: 'fhx-alias',
-    resolveId(source: string, importer: string | undefined) {
+    async resolveId(source: string, importer: string | undefined) {
       const matchEntry = entries.find((entry) => entry.match(source))
       if (!matchEntry) return source
-      return addExtension(matchEntry.replace(source))
+      const resolution = await this.resolve(matchEntry.replace(source), importer, {
+        skipSelf: true,
+      })
+      return resolution?.id 
     },
   }
 }
